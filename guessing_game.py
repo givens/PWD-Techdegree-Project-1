@@ -7,6 +7,7 @@ GOING FOR EXCEEDS
 @author: bg
 """
 import random
+import sys
 #import pdb
 
 LOW_VALUE = 1
@@ -40,13 +41,13 @@ def play_a_game(best):
 
     tries = 1
     while True:
-        
-#        pdb.set_trace()
+
+        #        pdb.set_trace()
 
         print("\nTry #{}".format(tries))
         #guess = input("> ")
         guess = input("Pick a number between {} and {}:  ".
-             format(LOW_VALUE, HIGH_VALUE))
+                      format(LOW_VALUE, HIGH_VALUE))
         try:
             guess = validate_guess(guess, valid)
         except ValueError as err:
@@ -65,7 +66,7 @@ def validate_guess(guess, valid):
     """
     Convert into integer.
     Determine if guess is valid.
-    Raise error if cannot be converted or guess out of 
+    Raise error if cannot be converted or guess out of
     valid values.
     """
     guess = int(guess)
@@ -87,8 +88,11 @@ def check_guess(guess, secret_number):
 
 def play_again():
     "Determine if user wishes to play again."
-    response = input("Play again [Y]es or [N]o?  ").lower()
-    if response[0] == "y":
+    try:
+        response = input("Play again [Y/y]es or [N/n]o?  ").lower()
+    except IndexError:
+        return False
+    if response.startswith("y"):
         print("Replaying...")
         return True
     return False
@@ -96,7 +100,7 @@ def play_again():
 
 def calculate_range(low, high):
     "Determine all possible guesses"
-    return list(range(low, high+1))
+    return list(range(low, high + 1))
 
 
 def secret_number(valid):
@@ -106,7 +110,7 @@ def secret_number(valid):
 
 def print_line(num):
     "Print a certain number of dashes"
-    print(num*'-')
+    print(num * '-')
 
 
 def welcome_banner():
@@ -127,7 +131,7 @@ def farewell_banner():
 
 def report_best_score(count):
     "Report best score in terms of minimum count"
-    if count != None:
+    if count is not None:
         print("\nThe BEST SCORE is {}.".format(count))
 
 
@@ -136,7 +140,7 @@ def update_best_count(count, best_count):
     Calculate the best minimum count using previous and
     current best.
     """
-    if best_count == None or count < best_count:
+    if best_count is None or count < best_count:
         return count
     return best_count
 
